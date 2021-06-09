@@ -1,0 +1,69 @@
+Q1)
+call db3.abc(); 로 프로시저를 부르면
+쿼리가 막 여러개 돌텐데 그것이 끝나기 전에
+새로운 서버하나를 띄워서 show full processlist;로 상태를 확인
+call이 끝나버리면 뒤에 테스트가 또 안될 수 있으니
+truncate table db3.test; 한 후
+다시 call db3.abc();로 테스트하기.
+SHOW ENGINE INNODB STATUS\G;
+
+
+SELECT * from INFORMATION_SCHEMA.INNODB_SYS_TABLESPACES;
+두 번째 인덱스 부터 (사진4)
+
+
+tmp 스토리지 모자라다 -> 1. 튜닝 2. 인스턴스 타입 변경이 대안이다.
+
+
+i) sha256 적용 => 사진5
+ii) 비밀번호 잃어버린 경우 => New Master Password
+$5$p0N=SL)#\c!81$8VFkF08RU4.MmqgzXjTk.f6O9PyMPfXvH4msiNrKzr0
+
+
+
+Privilege 'log_bin_trust_function_creators' 파라미터를 enable 해주면 된다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

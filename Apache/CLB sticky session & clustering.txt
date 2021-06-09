@@ -1,0 +1,16 @@
+https://linuxer.name/2019/10/alb-sticky-session-%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0/
+
+<Sticky session>
+
+Sticky session은 L7에서만 지원함. -> HTTP 헤더를 읽어서(쿠키) 작동하기 때문에 최소 L7 게층 조건을 만족해야하기 때문
+
+CLB는 L4, L7 지원하긴 하지만
+만약 CLB Internal 구조로 생성되어서 TCP 포트를 통신한다면 TCP는 L4 계층에서 하는 통신이기 때문에 Sticky session을 적용할 수 없음
+
+따라서 톰캣 클러스터링을 적용시켜야함
+
+<Session Clustering>
+https://jistol.github.io/java/2017/09/15/tomcat-clustering/
+https://blog.naver.com/PostView.nhn?blogId=whydda&logNo=221567551449
+http://tomcat.apache.org/tomcat-8.5-doc/cluster-howto.html
+https://sweetysnail1011.tistory.com/57

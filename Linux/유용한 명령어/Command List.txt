@@ -1,0 +1,5 @@
+<파일 내 문자 검색>
+find . -name '*.xml' | xargs grep -r '8095'
+
+<프로세스 시작 시간 확인>
+ps -eo pid,lstart,cmd | grep httpd | grep -v grep

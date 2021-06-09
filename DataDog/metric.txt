@@ -1,0 +1,11 @@
+Datadog ec2 
+Datadog rds
+이런식으로 namespace에 대해 검색하면 해당 메트릭에 대ㅏㄴ Docs가 나온다
+
+mem의 경우 buffer 같은거까지 있을 수 있어서
+system.mem.used와
+(system.mem.total - system.mem.usable) 의 값이 차이가 생긴다.
+
+실제 사용중인 메모리 값을 계산하려면 (system.mem.total - system.mem.usable) / system.mem.total 한다.
+swap 사용량을 %로 보기위해서
+{(system.swap.used) / (system.swap.total)} * 100

@@ -1,0 +1,27 @@
+<작업 절차>
+1. 작업 일정 수립 필요
+ - 서비스 사용이 없는 새벽 시간 혹은 서비스 담당자 대응 가능한 일정 검토 필요
+2. 작업 간 이슈 대응 절차
+ - AMI 백업 : 복구 불가한 이슈 발생 시 장비 재 생성 위하여 작업 전 상태를 AMI 백업 수행
+ - 타입 변경 후 정상 동작 하지 않을 시 타입 롤백
+	ex) m4 -> m5 타입 변경시 문제 있는 케이스가 잦음. (https://forums.aws.amazon.com/thread.jspa?threadID=268592)
+3. 작업 절차
+ - AMI 백업 (시스템 재부팅 없이 설정)
+ - AutoScaling의 경우 시작 구성 복사하여 인스턴스 유형 변경하고 AMI 새로 뜬것으로 생성 후
+   AutoScaling 기존 것 편집하여 시작 구성을 변경해준다.
+ - fstab 에서 추가 마운트 볼륨에 대해서 정보 변경이 되지 않도록 UUID 고정
+ - fstab 에서 추가 마운트 볼륨이 문제가 있더라도 기동 되도록 nofail 옵션 추가
+ - EC2 stop 및 타입 변경
+ - EC2 start 및 EC2 이상 유무 및 서비스 점검
+
+-----
+<참고 사항>
+
+- EC2 타입 변경시 재기동 없는 타입 변경은 불가능하다.
+서버를 stop해야 타입 변경 버튼이 활성화 된다. 이후 타입을 변경하고 해당 서버를 start
+- RDS는 '중단되는 설정 변경'과 '중단 없이 변경되는 설정'으로 나뉜다.
+
+
+Amazon EBS 및 NVMe 관련 문서
+
+https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html
