@@ -28,21 +28,21 @@ AWS 리소스를 시작할 수 있는 가상 네트워크.
 
   
 
-  ![VPC Interface endpoint](image/VPC Interface endpoint.PNG)
+  ![VPC Interface endpoint](img/VPC Interface endpoint.PNG)
 
   * 위의 사진을 참고하여 아래처럼 실제로 VPC에서 구성해보았다.
 
-  ![VPC Interface endpoint2](image/VPC Interface endpoint2.PNG)
+  ![VPC Interface endpoint2](img/VPC Interface endpoint2.PNG)
 
   * 엔드포인트를 생성 후 '프라이빗 DNS 이름 활성화' 비활성화 할 경우
 
-  ![VPC Interface endpoint3](image/VPC Interface endpoint3.PNG)
+  ![VPC Interface endpoint3](img/VPC Interface endpoint3.PNG)
 
   * 위와 같이 여전히 공인 IP를 통한 접근을 하게 된다.
 
-    ![VPC Interface endpoint4](image/VPC Interface endpoint4.PNG)
+    ![VPC Interface endpoint4](img/VPC Interface endpoint4.PNG)
 
-  ![VPC Interface endpoint5](image/VPC Interface endpoint5.PNG)
+  ![VPC Interface endpoint5](img/VPC Interface endpoint5.PNG)
 
   * '프라이빗 DNS 이름 활성화' 활성화 후 `nslookup` 커맨드 시 정상적으로 EndPoint를 통해 접근
 
@@ -57,7 +57,7 @@ AWS 리소스를 시작할 수 있는 가상 네트워크.
   * S3, Dynamo DB를 위한 Endpoint인 Gateway endpoint는 Interface endpoint와 달리 인터페이스가 추가되지 않음.
   * 대신 VPC Gateway Endpoint로 향하는 Private subnet의 Routing table에 Routing이 자동으로 추가된다.
 
-  ![VPC Interface endpoint6](image/VPC Interface endpoint6.PNG)
+  ![VPC Interface endpoint6](img/VPC Interface endpoint6.PNG)
 
   * 이후 해당 S3 Bucket의 공인 IP인 (52.219.60 or 56.0/?) 에 `traceroute` 명령어로 확인 시 NAT Gateway로 나간 흔적이 보이지 않음 -> 공인 IP를 타지 않는다.
   * `/aws s3 ls` 명령어를 통해 기능이 제대로 작동하는지 확인.
