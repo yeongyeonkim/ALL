@@ -50,29 +50,69 @@ spec:
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-	name: httpd-replicaset
-	labels:
-		app: httpd-replicaset
+  name: httpd-replicaset
+  labels:
+    app: httpd-replicaset
 spec:
-	replicas: 3
-	selector:
-		matchLabels:
-			app: httpd-replicaset
-	template:
-		metadata:
-			labels:
-            	app: httpd_replicaset
-       	spec:
-       		containers:
-       		- image: ethos93/go-httpd:v1
-       		  imagePullPolicy: Always
-       		  name: httpd-replicaset
-       		  ports:
-       		  - containerPort: 80
-       		    protocol: TCP
-		
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpd-replicaset
+  template:
+    metadata:
+      labels:
+        app: httpd-replicaset
+    spec:
+      containers:
+      - image: ethos93/go-httpd:v1
+        imagePullPolicy: Always
+        name: httpd-replicaset
+        ports:
+        - containerPort: 80
+          protocol: TCP
 ```
 
+* replicas는 몇개의 복제본을 만들 것인지 지정하는 것
+* selector는 label(template에 정의된 label)을 통해 pod를 확인하면서 현재 pod의 수를 관리한다. 
+* template에는 pod의 manifest가 그대로 들어갑니다.
+* 이후 `kubectl apply -f replicaset.yaml` 명령으로 생성
 
+#### Deployment
 
-* 
+* ReplicaSet은 image의 tag를 변경하더라도 Pod를 새롭게 만들지 않는다. ReplicaSet을 통해 새로운 버전의 image Pod를 만들기 위해서는, 기존 ReplicaSet을 삭제하고, 새롭게 ReplicaSet을 생성해 주어야 한다. 따라서, 무중단으로 서비스 되어야 하는 Production 환경에서는 적합하지 않으므로 Deployment가 필요하다.
+* Deployment는 Image 버전 변경 시 Update 전략에 따라 RollingUpdate 등을 지원한다. AutoScaling도 지원하여 복제본의 수를 부하 상태에 따라 자동 조절도 해준다.
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment
+  labels:
+    app: httpd-deployment
+spec:
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: httpd-deployment
+  template:
+    metadata:
+      labels:
+        app: httpd-deployment
+    spec:
+      containers:
+      - image: ethos93/go-httpd:v1
+        imagePullPolicy: Always
+        name: httpd-deployment
+        ports:
+        - containerPort: 80
+          protocol: TCP
+```
+
+* RollingUpdate를 지정하는 경우 maxSurge (지정된 복제본 수 이상으로 만들 Pod 수), maxUnavailable (지정된 복제본 수 보다 적게 서비스 될 수 있는 Pod 수)
+
+d
