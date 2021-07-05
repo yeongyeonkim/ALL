@@ -5,6 +5,12 @@
 
 `kubectl describe pod <pod-name> -n <namespace`
 
+---
+
+참고 : https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster
+
+* 모든 Kubernetes 객체는 etcd에 저장된다. etcd 클러스터 데이터를 정기적으로 백업하는 것이 중요하다.
+
 * ETCD databases snapshot 생성
 
   `ETCDCTL_API=3 etcdctl snapshot save --help`
