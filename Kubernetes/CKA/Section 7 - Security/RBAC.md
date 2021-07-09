@@ -52,11 +52,55 @@ roleRef:
 
 `kubectl describe role <role-name>`
 
+* dev-user로서 명령어를 사용 (권한 확인) (`--as {user}`)
+
+  `kubectl get pods --as dev-user` 와 같이 사용
+
 * 할당할 수 있는 자원을 확인
 
   `kubectl api-resources`
 
   `kubectl api-resources --namespaced=true|false`
+
+`kubectl create role developer --resource=pods --verb=list,create`
+
+`kubectl create rolebinding dev-user-binding --role=developer --user=dev-user`
+
+Q) `dev-user`가 `blue`  namespace의 `dark-blue-app` 파드 상세정보를 얻을 수 있게 수정하라.
+
+A) 
+
+`kubectl get role -A` 하여 네임스페이스의 role 이름을 확인
+
+`kubectl edit role {role} -n {namespace}`
+
+![](img/5.PNG)
+
+resourceNames에 해당 Pod를 추가시켜준다.
+
+
+
+Q) 
+
+Grant the `dev-user` permissions to create deployments in the `blue` namespace.
+
+Remember to add both groups `"apps"` and `"extensions"`.
+
+A) 
+
+`kubectl create role deploy-role --verb=create --resource=deployments.apps --namespace=blue`
+
+위처럼 하고 edit해서 extentsion도 추가
+
+`kubectl create rolebinding deploy-rolebinding --user=dev-user --role=deploy-role --namespace=blue`
+
+yaml 파일로도 작성
+
+![](img/7.PNG)
+
+![](img/8.PNG)
+
+
 
 ---
 

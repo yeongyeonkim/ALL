@@ -53,7 +53,7 @@ users:
 
 * current-context 변경하는 명령어
 
-  `kubectl config use-context {user}@{cluster}`
+  `kubectl config use-context {context의 name}`
 
 * kubeconfig의 사용자 항목 설정
 
@@ -70,4 +70,3 @@ users:
   certificate-authority-data: {data}
   ```
 
-* 
