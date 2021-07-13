@@ -19,3 +19,36 @@
 
 ---
 
+##### ETCD 백업, 복원 명령어는 필수
+
+```yaml
+# Backup
+ETCDCTL_API=3 etcdctl \ 
+--endpoints {endpoint url} \ 
+--cert={etcd-client.crt} \ 
+--key={etcd-client.key} \ 
+--cacert={etcd-ca.crt} \ 
+snapshot save etcd-backup.db 
+
+# Restore ETCDCTL_API=3 etcdctl \ 
+--endpoints {endpoint url} \ 
+--cert={etcd-cert.crt} \ 
+--key={etcd-key.key} \ 
+--cacert={etcd-ca.crt} \ 
+--data-dir={backup-dir-path} \ 
+--initial-advertise-peer-urls={address} \ 
+--initial-cluster={address} \ 
+--name=${name} \ 
+snapshot restore etcd-backup.db
+```
+
+---
+
+##### 클러스터 업그레이드 순서
+
+* 업그레이드는 기본 노드에서 하는 것이 아님
+  1. node drain
+  2. kubeadm upgrade
+  3. kubelet upgrade
+  4. kubectl upgrade
+  5. node uncordon
