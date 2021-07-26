@@ -4,19 +4,21 @@
 
 1. List all the pods sorted by name
 
-   ```
+   ```shell
    kubectl get pods --sort-by=metadata.name
    ```
 
 2. Create a pod with image nginx called nginx and allow traffic on port 80
 
-   ```
+   ```shell
    kubectl run nginx --image=nginx:latest --port=80
    ```
 
-   
+3. Create and configure the service front-end-service so it's accessible through NodePort and routes to the existing pod named front-end.
 
-3. ㅇ
+   ```shell
+   kubectl expose pod front-end --name=front-end-service --port=80 --target-port=80 --type=NodePort
+   ```
 
 4. ㅇ
 
@@ -46,7 +48,5 @@
 
 17. ㅇ
 
-18. ㅇ
-
-19. 
+18. 
 

@@ -21,27 +21,3 @@ Deploy a DaemonSet for `FluentD` Logging. Use the given specifications.
 
 * DaemonSet은 Deployment와 구조가 비슷하기 때문에 deployment를 생성하고 kind를 바꿔주는 방식을 사용
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
