@@ -1,0 +1,127 @@
+##### 노드에 포드 할당
+
+```yaml
+# https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  nodeName: node01
+  containers:
+  -  image: nginx
+     name: nginx
+```
+
+##### 파라미터 key, value 구문
+
+```shell
+# How many objects are in the prod environment including PODs, ReplicaSets and any other objects?
+kubectl get all --selector env=prod,bu=finance,tier=frontend
+```
+
+##### Taint, Toleration
+
+```shell
+# https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+# Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
+kubectl taint nodes node01 spray=mortein:NoSchedule
+```
+
+##### Node Affinity (node, pod에 따라 spec 안의 affinity 파라미터 값이 많이 달라짐)
+
+```shell
+# https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+# Apply a label color=blue to node node01
+kubectl label nodes node01 color=blue
+
+# 노드
+# https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/#schedule-a-pod-using-required-node-affinity
+ 
+# 파드
+# https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+```
+
+```shell
+# Create a new deployment named red with the nginx image and 2 replicas, and ensure it gets placed on the controlplane node only. 
+# Use the label - node-role.kubernetes.io/master - set on the controlplane node.
+
+kubectl create deploy red --image=nginx --replicas=2 --dry-run -o yaml > red.yaml
+```
+
+```yaml
+# red.yaml
+# # 표시 한 것들 위주로 수정
+apiVersion: apps/v1 #
+kind: Deployment #
+metadata:
+  creationTimestamp: null
+  labels:
+    app: red
+  name: red
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: red
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: red
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+      affinity:
+        nodeAffinity: #
+          requiredDuringSchedulingIgnoredDuringExecution: #
+            nodeSelectorTerms: #
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+                #operator가 Exists가 아닌 in이면 필요한 요소가 더 있음.
+```
+
+##### Resource Limits
+
+* CrashLoopBackOff 상태는 포드의 메모리가 부족하여 실패했음을 나타냅니다. POD에 설정된 메모리 제한을 식별합니다.
+* CrashLoopBackOff 상태인 경우 `logs` 혹은 `describe` 로 상태를 확인하여 문제를 해결.
+
+##### DaemonSets
+
+* kubectl create deployment 를 생성하고 `replicas` 부분을 삭제하고 `kind`를 DaemonSet 으로 바꾸어 주면 된다.
+
+##### Static Pod
+
+* 정적 포드는 API 서버가 아닌 특정 노드의 kubelet 데몬이 만들고 관리하는 포드. 정적 포드가 충돌하면 kubelet이 이를 다시 시작한다.
+
+* 컨트롤 플레인 에 해당하는 서비스는 스케줄러가 아닌 정적 포드 형태로 배포가 된다. 
+* 따라서, kubelet 구성 파일에 `staticPodPath: <the directory` 필드가 존재한다.</br>
+  `ps -ef | grep kubelet` 으로 정적 포드 정의 파일 디렉토리를 확인.
+
+![](img/1.PNG)
+
+* 기본적으로 정적 포드는 컨트롤 플레인 구성 요소에 대해 생성되므로 컨트롤 플레인 노드에서만 생성된다. 
+
+* 정적포드의 생성
+
+  ```shell
+  # /etc/kubernetes/manifests 와 같이 매니페스트 디렉토리에 yaml을 배치하고 create 해야한다.
+  kubectl run --image=busybox static-busybox --dry-run=client -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+  ```
+
+  ![](img/2.PNG)
+
+##### Multiple Schedulers
+
+
+
+
+
+
+
+---
+
