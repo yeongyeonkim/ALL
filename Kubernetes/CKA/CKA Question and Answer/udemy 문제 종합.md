@@ -115,13 +115,61 @@ spec:
 
   ![](img/2.PNG)
 
-##### Multiple Schedulers
+---
 
+##### Rolling Update and RollBack
 
+* 파드 인스턴스를 점진적으로 새로운 것으로 업데이트하여 디플로이먼트 업데이트가 서비스 중단 없이 이루어질 수 있도록 해준다. 새로운 파드는 가용한 자원을 보유한 노드로 스케줄 될 것이다.
+* 디플로이먼트가 외부로 노출되면, 서비스는 업데이트가 이루어지는 동안 오직 가용한 파드에게만 트래픽을 로드밸런스 할 것이다.
 
+```shell
+kubectl edit deployment <deploy-name>
+```
 
+**Commands and Arguments**
 
+```shell
+kubectl run ubuntu-sleeper-2 --image=ubuntu -o yaml --command -- sleep 5000 > ubuntu-sleeper-2.yaml
+```
 
+##### ConfigMap
+
+```shell
+kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue
+# --from-file --from-literal
+```
+
+##### Multi Container pods
+
+```yaml
+# https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#init-containers-in-use
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+   
+  - name: abc
+    image: def
+    command: ['sleep 20']
+    # command는 위 아래 형식 둘 다 가능하다.
+    command: 
+      - "sleep"
+      - "20"
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+```
+
+* Pod 내의 로그 파일 확인하는 법
+
+`kubectl exec -it <pod> -n <namespace> -- cat <log_path>`
 
 ---
 
