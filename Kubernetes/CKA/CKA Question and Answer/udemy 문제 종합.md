@@ -22,6 +22,9 @@ kubectl get all --selector env=prod,bu=finance,tier=frontend
 
 ##### Taint, Toleration
 
+* 테인트와 톨러레이션은 함께 작동하여 파드가 부적절한 노드에 스케줄되지 않게 한다.
+* 노드에 테인트를 배치하고 톨러레이션은 파드에 적용된다.
+
 ```shell
 # https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 # Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
@@ -172,4 +175,37 @@ spec:
 `kubectl exec -it <pod> -n <namespace> -- cat <log_path>`
 
 ---
+
+##### OS Upgrade
+
+```shell
+kubectl get po -o wide # -> node01
+# node01 업그레이드를 하기 위해서 해당 노드에 연결되어 있는 포드의 스케줄을 다른 노드로 되게끔 해야한다. 
+# daemonset 을 무시하고, db 데이터와 같은 로컬 데이터를 삭제 후 진행
+kubectl drain node01 --ignore-daemonsets --delete-local-data
+kubectl get po -o wide # -> controlplane # controlplane에 taint가 없기 때문
+# node01에 스케줄이 되도록 uncordon
+kubectl uncordon node01
+```
+
+##### Cluster Upgrade Process
+
+```shell
+# https://v1-20.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
+# Control plane 1.19.0 -> 1.20.0
+kubectl drain controlplane --ignore-daemonsets
+apt-get update
+apt install kubeadm=1.20.0-00
+kubeadm upgrade apply v1.20.0
+apt install kubelet=1.20.0-00
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon controlplane
+# Worker node 동일
+```
+
+##### Backup and Restore Methods
+
+```
+```
 
