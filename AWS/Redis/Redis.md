@@ -3,7 +3,7 @@
 * 클러스터 모드 비활성화 vs 클러스터 모드 활성화
   (https://docs.aws.amazon.com/ko_kr/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html)
 
-  ![Cluster Mode](Cluster Mode.PNG)
+  ![Cluster Mode](/Cluster Mode.PNG)
 
 * 비활성화 - '기본 엔드포인트' 사용
   활성화 - '구성 엔드포인트' 사용
@@ -36,7 +36,7 @@
 
 * Redis Create
 
-![1. Create Redis](1. Create Redis.PNG)
+![1. Create Redis](/1. Create Redis.PNG)
 
 * Name 규칙상 _로는 생성이 안되므로 유의 (사진과 같이 만들 경우 오류 발생)
 
