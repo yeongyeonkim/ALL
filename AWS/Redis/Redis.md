@@ -49,6 +49,8 @@
 
 * web.xml `<session-config>` 설정 확인
 
+  session-timeout 시간 설정.
+
 * context.xml 수정
 
   `vi /usr/local/tomcat/conf/context.xml`
