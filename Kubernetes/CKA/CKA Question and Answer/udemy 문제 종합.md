@@ -1,3 +1,10 @@
+##### context switch
+
+* `kubectl config get-contexts`로 context 확인 후
+* `kubectl config use-context <context-name>` 으로 switch
+
+![3](img/3.PNG)
+
 ##### 노드에 포드 할당
 
 ```yaml
