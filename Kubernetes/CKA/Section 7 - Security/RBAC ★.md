@@ -3,6 +3,7 @@
 * Role을 생성하여 각각의 Role에 권한을 세부적으로 명시하고, RoleBinding을 통해 특정 Role을 사용자에게 종속시키는 방식으로 사용자에게 권한을 할당한다. 
 
 * namespace 범위의 권한 할당은 Role과 RoleBinding을 사용.
+
 * cluster 범위의 권한 할당은 ClusterRole과 ClusterRoleBinding을 사용.
 
 ---
@@ -53,13 +54,13 @@ roleRef:
 `kubectl describe role <role-name>`
 
 * dev-user로서 명령어를 사용 (권한 확인) (`--as {user}`)
-
+  
   `kubectl get pods --as dev-user` 와 같이 사용
 
 * 할당할 수 있는 자원을 확인
-
+  
   `kubectl api-resources`
-
+  
   `kubectl api-resources --namespaced=true|false`
 
 `kubectl create role developer --resource=pods --verb=list,create`
@@ -77,8 +78,6 @@ A)
 ![](img/5.PNG)
 
 resourceNames에 해당 Pod를 추가시켜준다.
-
-
 
 Q) 
 
@@ -99,8 +98,6 @@ yaml 파일로도 작성
 ![](img/7.PNG)
 
 ![](img/8.PNG)
-
-
 
 ---
 
@@ -134,3 +131,8 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+---
+
+#### Service Account
+
+`kubectl set serviceaccount deployment <deployment> <serviceaccount>`
