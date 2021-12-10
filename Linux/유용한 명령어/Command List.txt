@@ -9,3 +9,11 @@ crontabl -l
 
 <한달마다 로그 제거하는 sh>
 find /logs/apache2/ -type d -mtime +30 -exec rm -rf {} \;
+
+<find 명령어를 통한 모든 디렉토리 소유자 변경> (권한도 동일함)
+find /usr/local/ -type f -exec chown root:root {} \;
+<find 명령어를 통한 모든 파일 소유자 변경> (권한도 동일함)
+find /usr/local/ -type d -exec chown root:root {} \;
+
+find /usr/local/tomcat8_bkr-omni-admin/temp/ -type d -exec chown omniadm:omniadm {} \;
+find /usr/local/tomcat8_bkr-omni-admin/temp/ -type f -exec chown omniadm:omniadm {} \;
