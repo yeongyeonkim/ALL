@@ -10,7 +10,7 @@ API 서버의 개입없이 kubelet이 자체적으로 생성한 POD 또는 나�
   해당 파일의 staticPodPath로.
 
 ```yaml
-# kubeconfig.yaml
+# `grep -i static /var/lib/kubelet/config.yaml`
 
 staticPodPath: /etc/kubernetes/manifest
 ```

@@ -1,3 +1,13 @@
+* context 사용
+  
+  `kubectl config --kubeconfig=/root/my-kube-config use-context research`
+
+* current context 확인
+  
+  `kubectl config --kubeconfig=/root/my-kube-config current-context`
+
+---
+
 예를 들어, 클라이언트가 인증서 파일과 키를 사용하여 kubernetes api 서버의 주소로 curl 요청을 보낸다면
 
 `curl https://apiserver:6443/api/v1/pods \ --key admin.key --cert admin.crt --cacert ca.crt`
@@ -44,29 +54,30 @@ users:
 `kubectl config view --kubeconfig={config file name}`
 
 * 명령어 옵션 확인
-
+  
   `kubectl config -h`
 
 * current-context 확인하는 명령어
-
+  
   `kubectl config current-context`
 
 * current-context 변경하는 명령어
-
+  
   `kubectl config use-context {context의 name}`
 
 * kubeconfig의 사용자 항목 설정
-
+  
   `kubectl config set-credentials user1 --client-certificate=user1.crt --client-key=user1.key`
 
 * kubeconfig의 컨텍스트 항목 설정
-
+  
   `kubectl config set-context user1-context --cluster=minikube --user=user1`
 
 * cluster 내의 certificate-authority 를 certificate-authority-data로 파일 경로를 읽는 것이 아닌 인코딩된 텍스트 형식으로 줄 수 있다.
-
+  
   ```yaml
   cat ca.crt | base64 # 이 결과 값을 data 값으로
   certificate-authority-data: {data}
   ```
+
 

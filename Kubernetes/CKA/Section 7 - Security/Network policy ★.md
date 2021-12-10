@@ -18,8 +18,6 @@
 
 ![](img2/4.png)
 
-
-
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -68,7 +66,7 @@ spec:
     ports:
     - protocol: TCP
       port: 3306
-      
+
   egress:
   - to:
     - ipBlock:
@@ -130,4 +128,3 @@ spec:
     - protocol: TCP
       port: 8080
 ```
-
