@@ -63,3 +63,11 @@ spec:
       # this field is optional
       type: DirectoryOrCreate
 ```
+
+* Name: app
+* Container Name: sidecar
+* Container Image: kodekloud/filebeat-configured
+* Volume Mount: log-volume
+* Mount Path: /var/log/event-simulator/
+* Existing Container Name: app
+* Existing Container Image: kodekloud/event-simulator
