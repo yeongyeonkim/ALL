@@ -5,7 +5,7 @@
 `docker run private-registry.io/apps/internal-app`
 
 ```yaml
-![1](C:\ALL\Kubernetes\CKA\Section 7 - Security\img2\1.PNG)# nginx-pod.yaml
+# nginx-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
