@@ -1,0 +1,4 @@
+Intellij에서 Gradle을 임포트할때 간혹 JVM을 찾지 못해 임포트하지 못하는 경우가 있다.
+
+File -> Project Structure -> Project -> Project SDK에서 JDK를 설정해 준다.
+
