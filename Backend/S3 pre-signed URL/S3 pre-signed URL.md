@@ -7,7 +7,7 @@
 
 ##### pre-signed URL 적용 전
 
-![before](img\before.png)
+![before](img/before.png)
 
 1. 이미지 업로드 요청 (Client -> Server)
 2. 서버는 이 요청을 처리하기 위해 권한을 검증.
@@ -16,7 +16,7 @@
 
 ##### pre-signed URL 적용 후
 
-![after](img\after.png)
+![after](img/after.png)
 
 * 서버에서 권한을 검증하는 행위가 이미 처리된 URL을 사용하기 때문에, 해당 URL을 사용하면 권한에 관계없이 누구나 업로드를 할 수 있다.
 
@@ -163,7 +163,7 @@ public class PresignedUrlDto {
 
 * AWS S3 버킷 적재 확인
 
-![1](img\1.png)
+![1](img/1.png)
 
 
 
