@@ -1,0 +1,37 @@
+https://hoonmaro.tistory.com/46를 보고 글을 작성하자.
+
+org.springframework.web.client.RestClientException: No HttpMessageConverter for org.springframework.util.LinkedMultiValueMap and content type "multipart/form-data"
+메시지 컨버터 없다는 에러 발생
+
+this.restTemplate.getRestTemplate().getMessageConverters().add(new FormHttpMessageConverter());
+this.restTemplate.getRestTemplate().getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+위 두 코드 추가
+
+
+[FormHttpMessageConverter]
+HTTP 요청 및 응답으로부터 form 데이터를 읽고 쓸 수 있는 구현체
+기본적으로 application/x-www-form-urlencoded 미디어 타입을 지원한다.
+Form 데이터는 MultiValueMap<String, String>읽고 작성된다.
+
+[MappingJackson2HttpMessageConverter]
+Jackson 라이브러리의 ObjectMapper를 사용하여 JSON을 읽고 쓸 수 있는 구현체
+JSON 매핑은 필요에 따라 Jackson이 제공하는 어노테이션을 통해 커스터마이징 될 수 있다
+추가 제어가 필요할 경우 특히, 특정 유형에 대해 커스텀 JSON 직렬화/역직렬화를 제공해야 하는 경우 
+ObjectMapper 속성을 통해 커스텀 ObjectMapper를 주입할 수 있다.
+기본적으로 application/json을 지원한다
+
+-----
+RestTemplate은 HTTP 클라이언트 라이브러리를 통해 높은 수준의 API를 제공해준다.
+오버로드 된 메소드는 다음과 같으며 그 중 exchange를 사용
+https://hoonmaro.tistory.com/46
+
+
+
+
+
+---
+<참고>
+https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/FormHttpMessageConverter.html
+https://hoonmaro.tistory.com/46
+https://java.hotexamples.com/examples/org.springframework.web.client/RestTemplate/getMessageConverters/java-resttemplate-getmessageconverters-method-examples.html
