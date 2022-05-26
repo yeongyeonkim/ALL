@@ -14,24 +14,3 @@
 ![2](img/HttpEntity RequestEntity ResponseEntity/2.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
