@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Main_2021_KAKAO_신규아이디추천 {
 	/*
 	 * 다른 분의 replaceAll을 사용한 멋진 코드
-	 *  public String solution(String new_id) {
+	 *  public String solution(String new_id) {p
         String answer = "";
         String temp = new_id.toLowerCase();
 
