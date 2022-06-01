@@ -19,7 +19,7 @@ public class Main_2021_KAKAO_숫자문자열과영단어 {
         map = createMap(map);
         for(int i=0; i<s.length();) {
         	char c = s.charAt(i);
-        	if(c >= '9') {
+        	if(c >= 'a') {
         		int idx = 3;
         		while(idx <= 5) {
         			String tmp = s.substring(i, i+idx);
