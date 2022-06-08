@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Main {
+public class Main_2019_KAKAO_실패율 {
 
 	public static void main(String[] args) {
 		System.out.println(solution(5, new int[] { 2, 1, 2, 6, 2, 4, 3, 3 }));
