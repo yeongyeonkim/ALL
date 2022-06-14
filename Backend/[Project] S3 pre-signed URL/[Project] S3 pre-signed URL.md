@@ -58,6 +58,12 @@ private String bucket;
 @Value("${presignedURL.region}")
 private String region;
     
+@Value("${presigned.accesskey}")
+private String accesskey;
+
+@Value("${presigned.secretkey}")
+private String secretkey;
+
 public Object getPresignedUrl(HttpServletRequest request, LoginAccountDto loginAccountDto) {
 	Date date = new Date();
 	date.setTime(date.getTime() + PRESIGNED_URL_EXPIRATION_TIME);
@@ -111,7 +117,7 @@ private AmazonS3 amazonS3Client(String region) {
 @Value("${proxy.host}")
 private String proxyHost;
 
-@Value("${proxy.port:0}")
+@Value("${proxy.port}")
 private Integer proxyPort;
     
 ClientConfiguration clientConfiguration = new ClientConfiguration();
