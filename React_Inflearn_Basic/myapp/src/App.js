@@ -1,16 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import PropsAndState from './props';
 
 class App extends Component {
     render() {
         return (
-            <Fragment>
-                <div>
-                    <h1>Hello React</h1>
-                </div>
-                <div>
-                    <h1>element Test</h1>
-                </div>
-            </Fragment>
+            <PropsAndState name="리액트" />
         );
     }
 }

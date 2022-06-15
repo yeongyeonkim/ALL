@@ -1,15 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import './App.css';
 
 class style extends Component {
     render() {
-        const style = {
-            backgroundColor: 'black',
-            padding: '16px',
-            color: 'white',
-            fontSize: '36px'
-        };
         return (
-          <div style={style}>
+          <div className="AppStyle">
               안녕 Style!
           </div>
         );

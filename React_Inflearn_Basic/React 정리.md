@@ -212,11 +212,260 @@ class style extends Component {
 export default style;
 ```
 
+##### Css 파일 적용하기
+
+* App.css
+
+```css
+.AppStyle {
+    background: black;
+    color: aqua;
+    font-size: 36px;
+    padding: 1rem;
+    font-weight: 600;
+}
+```
+
+* style.js
+
+```react
+import React, { Component } from 'react';
+import './App.css';
+
+class style extends Component {
+    render() {
+        return (
+          <div className="AppStyle"> // css 파일의 className과 일치시켜 주어야 한다
+              안녕 Style!
+          </div>
+        );
+    }
+}
+
+export default style;
+```
+
+##### JSX 내부에서 주석을 사용하는 방법 `{ }`
+
+```react
+import React, { Component } from 'react';
+import './App.css';
+
+class style extends Component {
+    render() {
+        return (
+          <div>
+            {/* 주석 처리를 위해 사용*/}
+            <h1>리액트</h1>
+          </div>
+        );
+    }
+}
+
+export default style;
+```
+
+---
+
+##### Props와 state
+
+props: 부모 컴포넌트가 자식 컴포넌트에게 주는 값. 자식 컴포넌트에서는 props를 받아올 수만 있고 직접 수정할 수 없다.
+
+```react
+import React, { Component } from 'react';
+
+class props extends Component {
+    render() {
+        return (
+            <div>
+                안녕하세요 제 이름은 <b>{this.props.name} 입니다.</b>
+            </div>
+        );
+    }
+}
+
+export default props;
+```
+
+```react
+import React, { Component, Fragment } from 'react';
+import PropsAndState from './props';
+
+class App extends Component {
+    render() {
+        return (
+            <PropsAndState name="리액트" />
+        );
+    }
+}
+
+export default App;
+```
+
+```react
+import React from 'react';
+import { render } from 'react-dom';
+import App from './App';
+
+render(<App />, document.getElementById('root'));
+```
+
+* props 값을 일부러 비워야할 때나 설정하지 않은 경우 오류가 발생하지 않도록 **기본 값**을 설정해준다.
+
+```react
+import React, { Component } from 'react';
+
+class props extends Component {
+    // 방식 1
+    static defaultProps = {
+        name: 'default'
+    }
+    render() {
+        return (
+            <div>
+                안녕하세요 제 이름은 <b>{this.props.name}</b> 입니다.
+            </div>
+        );
+    }
+}
+// 방식 2
+
+export default props;
+```
+
+state: 반면에 컴포넌트 내부에서 선언하여 내부에서 값을 변경할 수 있다.
+
+-> 동적인 데이터를 다룰 때 사용
+
+```react
+import React, { Component } from "react";
+
+class state extends Component {
+    state = {
+        number: 0
+    }
+
+    handleIncrease = () => {
+        this.setState({
+            number: this.state.number + 1
+        });
+    }
+
+    handleDecrease = () => {
+        this.setState({
+           number: this.state.number - 1
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>state</h1>
+                <div>값: {this.state.number}</div>
+                <button onClick={this.handleIncrease}>+</button>
+                <button onClick={this.handleDecrease}>-</button>
+            </div>
+        );
+    }
+}
+
+export default state;
+```
+
+---
+
+### LifeCycle API
+
+*  컴포넌트가 브라우저에서 나타날 때, 사라질 때, 업데이트 될 때 호출되는 API
+
+```react
+import React, { Component } from 'react';
+
+const Problematic = () => {
+    throw (new Error('버그가 나타났다!'));
+    return (
+        <div>
+
+        </div>
+    );
+};
+
+class LifeCycleAPI extends Component{
+    state = {
+        number: 0
+    }
+
+    constructor(props) {
+        super(props);
+        console.log('constructor');
+    }
+
+    componentWillMount() {
+        console.log('componentWillMount (deprecated)');
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount');
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        // 5 의 배수라면 리렌더링 하지 않음
+        console.log('shouldComponentUpdate');
+        if (nextState.number % 5 === 0) return false;
+        return true;
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log('componentWillUpdate');
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate');
+    }
 
 
+    handleIncrease = () => {
+        const { number } = this.state;
+        this.setState({
+            number: number + 1
+        });
+    }
 
+    handleDecrease = () => {
+        this.setState(
+            ({ number }) => ({
+                number: number - 1
+            })
+        );
+    }
 
+    componentDidCatch(error, info) {
+        this.setState({
+            error: true
+        });
+    }
 
+    render() {
+        if (this.state.error) return (<h1>에러발생!</h1>);
+
+        return (
+            <div>
+                <h1>카운터</h1>
+                <div>값: {this.state.number}</div>
+                { this.state.number === 4 && <Promblematic /> }
+                <button onClick={this.handleIncrease}>+</button>
+                <button onClick={this.handleDecrease}>-</button>
+            </div>
+        );
+    }
+}
+
+export default LifeCycleAPI;
+```
+
+* 개발자 도구 console에서 찍히는 순서를 확인하고, 특정 상황으로 렌더링 되었을 때 에러가 발생했음을 알리는 Problematic을 사용하여 웹 페이지에서 확인
+
+---
 
 
 
