@@ -1,3 +1,7 @@
+#### 렌더링
+
+* 리액트에서 렌더링이란, 컴포넌트가 현재 props와 state의 상태에 기초하여 UI를 어떻게 구성할지 컴포넌트에게 요청하는 작업을 의미한다.
+
 ```react
 // React 모듈을 사용하기 위한 import
 import React, {Component} from 'react';
@@ -269,7 +273,7 @@ export default style;
 
 ##### Props와 state
 
-props: 부모 컴포넌트가 자식 컴포넌트에게 주는 값. 자식 컴포넌트에서는 props를 받아올 수만 있고 직접 수정할 수 없다.
+* props: 부모 컴포넌트가 자식 컴포넌트에게 주는 값. 자식 컴포넌트에서는 props를 받아올 수만 있고 직접 수정할 수 없다.
 
 ```react
 import React, { Component } from 'react';
@@ -333,9 +337,8 @@ class props extends Component {
 export default props;
 ```
 
-state: 반면에 컴포넌트 내부에서 선언하여 내부에서 값을 변경할 수 있다.
-
--> 동적인 데이터를 다룰 때 사용
+* state: 반면에 컴포넌트 내부에서 선언하여 내부에서 값을 변경할 수 있다.
+  * input 컴포넌트의 입력을 state에 담는 등 동적인 데이터를 다룬다.
 
 ```react
 import React, { Component } from "react";
@@ -464,24 +467,3 @@ export default LifeCycleAPI;
 ```
 
 * 개발자 도구 console에서 찍히는 순서를 확인하고, 특정 상황으로 렌더링 되었을 때 에러가 발생했음을 알리는 Problematic을 사용하여 웹 페이지에서 확인
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
