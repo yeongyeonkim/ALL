@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo -e "\033[31mEnter the name of loadbalancer\033[0m"
+read jsonfile
+
+## <--- loadbalancer --->
+lb="[{"
+
+    echo -e "\033[32mEnter the targetGroupArn\033[0m"
+    read tga
+
+    echo -e "\033[32mEnter the containerName\033[0m"
+    read cn
+
+    echo -e "\033[32mEnter the containerPort\033[0m"
+    read cp
+
+    lb="$lb\"targetGroupArn\": \"$tga\",\n\"containerName\": \"$cn\",\n\"containerPort\": $cp }]"
+
+    echo -e $lb | jq '.' > json/$jsonfile

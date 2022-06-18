@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo -e "\033[31mEnter the name of serviceRegistry\033[0m"
+read jsonfile
+
+echo -e "\033[32mEnter the Service ID of Cloud Map\033[0m"
+read srv
+
+echo -e "\033[32mEnter the region\033[0m"
+read region
+
+echo -e "\033[32mEnter the Account ID\033[0m"
+read accountid
+
+discovery="[{\"registryArn\": \"arn:aws:servicediscovery:$region:$accountid:service/$srv\"}]"
+
+echo -e $discovery | jq '.' > json/$jsonfile

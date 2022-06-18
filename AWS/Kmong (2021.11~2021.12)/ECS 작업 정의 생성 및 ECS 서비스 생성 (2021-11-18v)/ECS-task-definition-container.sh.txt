@@ -1,0 +1,96 @@
+#!/bin/bash
+echo -e "\033[31mEnter the name of ContainerDefinition\033[0m"
+read jsonfile
+
+echo -e "\033[31mEnter the number of container\033[0m"
+read cnt
+
+definition="["
+for (( k=1; k<=$cnt; k++ ))
+do
+container=""
+    ## DO  ##
+
+    echo -e "\033[32mEnter the Container name\033[0m"
+    read containername
+
+    result="{\n\"name\": \"$containername\","
+
+    echo -e "\033[31mEnter the number of environment variables\033[0m"
+    read count
+
+    env=""
+    for (( i=1; i<=$count; i++ ))
+    do
+        echo -e "\033[32menv name:\033[0m"
+        read name
+        echo -e "\033[32menv value:\033[0m"
+        read value
+        env="$env {\"name\": \"$name\", \"value\": \"$value"\"}
+        if [ $i -ne $count ] ; then
+            env="$env,"
+        fi
+    done
+
+    result="$result\n\"environment\": [$env],"
+    #echo $result
+
+    echo -e "\033[32mEnter the image\033[0m"
+    read image
+
+    result="$result\n\"image\": \"$image\","
+    #echo $result
+
+    echo -e "\033[31mEnter the number of portMappings varibales\033[0m"
+    read count
+
+    port=""
+    for (( i=1; i<=$count; i++ ))
+    do
+        echo -e "\033[32mcontainerPort: \033[0m"
+        read containerPort
+        echo -e "\033[32mhostPort: \033[0m"
+        read hostPort
+        echo -e "\033[32mprotocol: \033[0m"
+        read protocol
+        port="$port {\"containerPort\": $containerPort, \"hostPort\": $hostPort, \"protocol\": \"$protocol"\"}
+        if [ $i -ne $count ] ; then
+            port="$port,"
+        fi
+    done
+
+    container="$result\n\"portMappings\": [$port]"
+
+    if [ "$containername" == "envoy" ] ; then
+        container="$container ,\"healthCheck\":{\"command\":[\"CMD-SHELL\",\"curl -s http://localhost:9901/server_info | grep state | grep -q LIVE\"],\"startPeriod\": 10,\"interval\": 5, \"timeout\": 2, \"retries\": 3}, \"user\": \"1337\""
+    fi
+
+    echo -e "\033[31mEnter the memory\033[0m"
+    read memory
+    if [ "$memory" != "" ] ; then
+        container="$container ,\n\"memory\": $memory"
+    fi
+
+    echo -e "\033[31mEnter the memoryReservation\033[0m"
+    read memoryReservation
+    if [ "$memoryReservation" != "" ] ; then
+        container="$container ,\n\"memoryReservation\": $memoryReservation"
+    fi
+
+    echo -e "\033[31mEnter the cpu\033[0m"
+    read cpu
+    if [ "$cpu" != "" ] ; then
+        container="$container ,\n\"cpu\": $cpu"
+    fi
+
+    definition="$definition$container"
+    if [ $k -ne $cnt ] ; then
+         definition="$definition\n},"
+    else
+         definition="$definition}]"
+    fi
+    ## DONE ##
+
+done
+
+echo -e $definition | jq '.' > json/$jsonfile

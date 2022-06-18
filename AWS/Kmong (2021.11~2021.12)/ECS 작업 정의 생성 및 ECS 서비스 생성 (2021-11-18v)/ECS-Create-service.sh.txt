@@ -1,0 +1,54 @@
+#!/bin/bash
+
+## <--- read file --->
+
+#<--- Load Balancer --->
+# targetGroupArn or loadBalancerName
+
+echo -e "Enter 1 if using loadbalancer, 0 otherwise"
+read lbflag
+
+if [ $lbflag -eq 1 ] ; then
+    echo -e "\033[32mEnter the loadbalancer json file path\033[0m"
+    read ajson
+    TargetGroupArn=$(cat $ajson | jq '.[0].targetGroupArn')
+    ContainerName=$(cat $ajson | jq '.[0].containerName')
+    ContainerPort=$(cat $ajson | jq '.[0].containerPort')
+fi
+
+echo -e "\033[32mEnter the awsvpcConfiguration json file path\033[0m"
+read bjson
+
+echo -e "\033[32mEnter the discovery json file path\033[0m"
+read cjson
+
+## <--- read parameter --->
+
+echo -e "\033[32mEnter the name of cluster\033[0m"
+read Cluster
+
+echo -e "\033[32mEnter the name of Service\033[0m"
+read Servicename
+
+#Taskdefinition=family:revision
+#if a revision is not specified, the latest ACTIVE revision is used
+echo -e "\033[32mEnter the name of taskdefinition\033[0m"
+read Taskdefinition
+
+echo -e "\033[32mEnter the Desiredcount\033[0m"
+read Desiredcount
+
+Launchtype=FARGATE
+
+#<--- VPC --->
+AwsvpcConfiguration=$(cat $bjson | jq '.awsvpcConfiguration')
+
+#<--- Service Discovery--->
+RegistryArn=$(cat $cjson | jq '.[0].registryArn')
+
+#<--- Command --->
+if [ $lbflag -eq 1 ] ; then
+    aws ecs create-service --cluster $Cluster --service-name $Servicename --task-definition $Taskdefinition --load-balancers targetGroupArn=$TargetGroupArn,containerName=$ContainerName,containerPort=$ContainerPort --service-registries registryArn=$RegistryArn,containerName=$ContainerName --desired-count $Desiredcount --launch-type $Launchtype --network-configuration file:///root/sh/service/json/awsvpcConfiguration.json --enable-ecs-managed-tags
+else
+    aws ecs create-service --cluster $Cluster --service-name $Servicename --task-definition $Taskdefinition --service-registries registryArn=$RegistryArn,containerName=$ContainerName --desired-count $Desiredcount --launch-type $Launchtype --network-configuration file:///root/sh/service/json/awsvpcConfiguration.json --enable-ecs-managed-tags
+fi

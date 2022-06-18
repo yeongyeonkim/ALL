@@ -1,0 +1,63 @@
+#!/bin/bash
+
+## <--- read file --->
+echo -e "\033[32mEnter the template file path\033[0m"
+read skeleton
+
+echo -e "\033[32mEnter the containerDefinition file path\033[0m"
+read containerDefinitionPath
+
+## <--- skeleton --->
+Family=$(cat $skeleton | jq -r '.family')
+Family=$(cat $skeleton | jq -r '.family')
+TaskRoleArn=$(cat $skeleton | jq -r '.taskRoleArn')
+ExecutionRoleArn=$(cat $skeleton | jq -r '.executionRoleArn')
+NetworkMode=$(cat $skeleton | jq -r '.networkMode')
+
+Compatibilities=""
+a=$(cat $skeleton | jq -r '.requiresCompatibilities[0]')
+b=$(cat $skeleton | jq -r '.requiresCompatibilities[1]')
+c=$(cat $skeleton | jq -r '.requiresCompatibilities[2]')
+if [ "$c" == "EC2" ] || [ "$c" == "FARGATE" ] || [ "$c" == "EXTERNAL" ] ; then
+    Compatibilities="$a $b $c"
+elif [ "$b" == "EC2" ] || [ "$b" == "FARGATE" ] || [ "$b" == "EXTERNAL" ] ; then
+    Compatibilities="$a $b"
+else
+    Compatibilities="$a"
+fi
+
+Cpu=$(cat $skeleton | jq -r '.cpu')
+Memory=$(cat $skeleton | jq -r '.memory')
+
+
+echo -e "Enter 1 if using proxy configuration, 0 otherwise"
+read proxyflag
+
+
+## <--- containerDefinition --->
+containerDefinition="file://$containerDefinitionPath"
+
+## <--- Create task-definition --->
+if [ $proxyflag -eq 0 ] ; then
+    aws ecs register-task-definition --family $Family --task-role-arn $TaskRoleArn --execution-role-arn $ExecutionRoleArn --network-mode $NetworkMode --container-definitions $containerDefinition --requires-compatibilities $Compatibilities --cpu $Cpu --memory $Memory
+else
+    echo -e "\033[32mEnter the containerName of proxyConfiguration\033[0m"
+    read ContainerName
+
+    echo -e "\033[32mEnter the number of properties\033[0m"
+    read cnt
+    result="["
+    for ((i=1; i<=$cnt; i++))
+    do
+        echo -e "\033[32mEnter the name of properties\033[0m"
+        read input
+        echo -e "\033[32mEnter the value of properties\033[0m"
+        read input2
+        result="$result{\"name\":\"$input\",\"value\":\"$input2\"}"
+        if [ $i -ne $cnt ] ; then
+        result="$result,"
+        fi
+    done
+    result="$result]"
+    aws ecs register-task-definition --family $Family --task-role-arn $TaskRoleArn --execution-role-arn $ExecutionRoleArn --network-mode $NetworkMode --container-definitions $containerDefinition --requires-compatibilities $Compatibilities --cpu $Cpu --memory $Memory --proxy-configuration "{\"type\":\"APPMESH\",\"containerName\":\"$ContainerName\",\"properties\":$result}"
+fi
