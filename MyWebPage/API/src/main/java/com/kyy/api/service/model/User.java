@@ -1,9 +1,23 @@
 package com.kyy.api.service.model;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+import javax.persistence.*;
+
+
+@Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "user")
 public class User {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String email;
 }
