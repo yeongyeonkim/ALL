@@ -16,20 +16,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration {
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2)
                 .select() // ApiSelectorBuilder 인스턴스 return
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class)) // 해당 어노테이션이 붙은 것만 내용을 읽음
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+//                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class)) // 해당 어노테이션이 붙은 것만 내용을 읽음
                 // .apis(RequestHandlerSelectors.basePackage("com.kyy.api.controller")) // 처럼 사용도 가능
                 .paths(PathSelectors.any())
-                .build();
-    }
-    public ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("YeongYeon API")
-                .description("영연 API ")
-                .termsOfServiceUrl("https://github.com/yeongyeonkim")
-                .license("")
-                .licenseUrl("")
-                .version("1.0")
                 .build();
     }
 }
