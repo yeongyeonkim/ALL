@@ -62,6 +62,22 @@ it('my name', () => {
 });
 ```
 
+```json
+// ok 버튼, cancel 버튼 공통 함수 만들기
+class SwalPopup {
+    confirm() {
+        return cy.get('.swal2-confirm').click();
+    }
+    cancel() {
+        return cy.get('.swal2-cancel').click();
+    }
+}
+
+export default new SwalPopup();
+```
+
+* 작성 시 role은 카멜방식이 아닌 '-' 사용
+
 ##### Wait
 
 1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못찾을 수 있으므로 wait를 사용한다.
