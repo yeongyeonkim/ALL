@@ -2,15 +2,9 @@ package com.kyy.api.controller;
 
 import com.kyy.api.repository.UserRepository;
 import com.kyy.api.service.model.User;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -43,10 +37,13 @@ public class UserController {
             @ApiResponse(code = HTTP_INTERNAL_ERROR, message = "500 internal error")
     })
     @PostMapping(value = "/user")
-    public User save() {
+    public User save(
+            @ApiParam(value = "회원 이름", required = true) @RequestParam String name,
+            @ApiParam(value = "회원 이메일", required = true) @RequestParam String email
+    ) {
         User user = User.builder()
-                .email("dudtbd111@naver.com")
-                .name("김영연")
+                .email(email)
+                .name(name)
                 .build();
         return userRepository.save(user);
     }
