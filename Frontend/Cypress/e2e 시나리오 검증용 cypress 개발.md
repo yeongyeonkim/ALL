@@ -24,18 +24,10 @@ describe('My Account', function () {
 });
 ```
 
-* 참고할만한 사이트 (https://example.cypress.io/)
+* 
 
 ```json
-cy.get('.class-name')
-  .type('dudtbd111@naver.com')
-  .should('have.value', 'dudtbd111@naver.com');
-// cy.get 해당 클래스 태그가 있는 요소를 선택한다.
-// 'dudtbd111@naver.com' 이란 문자열을 입력한다.
-// should 함수를 통해, `dudtbd111@naver.com` 문자열을 값으로 가지고 잇는지 확인
 
-cy.url(); // 현재 url을 가져올 수 있다.
-cy.url().should('be.visible');
 ```
 
 ##### Selector Playground
@@ -78,6 +70,21 @@ export default new SwalPopup();
 
 * 작성 시 role은 카멜방식이 아닌 '-' 사용
 
+* 참고할만한 사이트 (https://example.cypress.io/)
+  * `.type()`: 문자열을 입력한다.
+
+```json
+cy.get('.class-name')
+  .type('dudtbd111@naver.com')
+  .should('have.value', 'dudtbd111@naver.com');
+// cy.get 해당 클래스 태그가 있는 요소를 선택한다.
+// 'dudtbd111@naver.com' 이란 문자열을 입력한다.
+// should 함수를 통해, `dudtbd111@naver.com` 문자열을 값으로 가지고 잇는지 확인
+
+cy.url(); // 현재 url을 가져올 수 있다.
+cy.url().should('be.visible');
+```
+
 ##### Wait
 
 1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못찾을 수 있으므로 wait를 사용한다.
@@ -87,7 +94,22 @@ cy.wait();
 // api의 결과를 별칭으로 지정 후 해당 별칭을 실행하고 싶은 순서대로 인자를 넣어줄 수도 있음 
 ```
 
-2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (inrtceptions[0]과 [1]이 됨)
+2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (interceptions[0]과 [1]이 됨)
+
+```javascript
+            cy.get('[data-cy="listMngArea"] .MuiTableBody-root > tr').eq(2).each(($el, idx) => {
+                cy.log($el.children().eq(1).text());
+                // cy.log($el.children().eq(2).text());
+                cy.log($el.children().eq(2).children().eq(0).text());
+            })
+
+/*
+	특정 Table (listMngArea 클래스가 있는)에 TableRow 3개와 각 TableRow안에는 TableCell이 4개가 있는데 Cell마다 속성이 달라서
+	데이터를 조회하기 원하는 .MuiTableBody-root > tr eq(2) - 3번째 테이블의 요소들을 
+	직접 불러온 뒤, 2번째 Cell과 3번째 Cell의 Children 값을 조회
+	
+*/
+```
 
 
 
