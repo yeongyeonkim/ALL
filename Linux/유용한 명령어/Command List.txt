@@ -17,3 +17,7 @@ find /usr/local/ -type d -exec chown root:root {} \;
 
 find /usr/local/tomcat8_bkr-omni-admin/temp/ -type d -exec chown omniadm:omniadm {} \;
 find /usr/local/tomcat8_bkr-omni-admin/temp/ -type f -exec chown omniadm:omniadm {} \;
+
+
+<서버 배포 후 로그 모니터링>
+tail -f /{log_path} | grep -i "Exception"

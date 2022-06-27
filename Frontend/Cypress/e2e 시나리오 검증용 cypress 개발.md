@@ -12,7 +12,7 @@
 
 * `cypress run --spec 'path/to/files/*.spec.js'` 경로를 기입하여 테스트 가능
 
-```json
+```javascript
 // cypress.json
 describe('My Account', function () {
     context('Result', function () {
@@ -26,7 +26,17 @@ describe('My Account', function () {
 
 * 
 
+<<<<<<< HEAD
 ```json
+=======
+```javascript
+cy.get('.class-name')
+  .type('dudtbd111@naver.com')
+  .should('have.value', 'dudtbd111@naver.com');
+// cy.get 해당 클래스 태그가 있는 요소를 선택한다.
+// 'dudtbd111@naver.com' 이란 문자열을 입력한다.
+// should 함수를 통해, `dudtbd111@naver.com` 문자열을 값으로 가지고 잇는지 확인
+>>>>>>> 0d20e1992069407cf781e32b1f70a4547b19f1ee
 
 ```
 
@@ -47,14 +57,14 @@ describe('My Account', function () {
 <Button data-cy={'name'}> </Button>
 ```
 
-```json
+```javascript
 // cypress.json
 it('my name', () => {
 	cy.get('[data-cy="name"]').click({force: true});
 });
 ```
 
-```json
+```javascript
 // ok 버튼, cancel 버튼 공통 함수 만들기
 class SwalPopup {
     confirm() {
@@ -87,13 +97,14 @@ cy.url().should('be.visible');
 
 ##### Wait
 
-1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못찾을 수 있으므로 wait를 사용한다.
+1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못 찾을 수 있으므로 wait를 사용한다.
 
-```json
+```javascript
 cy.wait();
 // api의 결과를 별칭으로 지정 후 해당 별칭을 실행하고 싶은 순서대로 인자를 넣어줄 수도 있음 
 ```
 
+<<<<<<< HEAD
 2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (interceptions[0]과 [1]이 됨)
 
 ```javascript
@@ -133,5 +144,16 @@ cy.wait();
 
 
 
+=======
+2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (interception[0]과 [1]이 됨)
+>>>>>>> 0d20e1992069407cf781e32b1f70a4547b19f1ee
 
+```javascript
+cy.intercept('POST', `/api/path`).as('postApi');
+cy.intercept('GET', `/api/path`).as('getApi');
+cy.wait(3000);
+cy.wait('@PostApi', '@getApi').then((interception) => {
+	// interception[0], interception[1]
+});
+```
 
