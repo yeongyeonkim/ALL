@@ -24,22 +24,6 @@ describe('My Account', function () {
 });
 ```
 
-* 
-
-<<<<<<< HEAD
-```json
-=======
-```javascript
-cy.get('.class-name')
-  .type('dudtbd111@naver.com')
-  .should('have.value', 'dudtbd111@naver.com');
-// cy.get 해당 클래스 태그가 있는 요소를 선택한다.
-// 'dudtbd111@naver.com' 이란 문자열을 입력한다.
-// should 함수를 통해, `dudtbd111@naver.com` 문자열을 값으로 가지고 잇는지 확인
->>>>>>> 0d20e1992069407cf781e32b1f70a4547b19f1ee
-
-```
-
 ##### Selector Playground
 
 * Cypress URL 왼쪽의 버튼을 클릭하면 요소에 대한 selector가 Console에 나타난다.
@@ -78,7 +62,7 @@ class SwalPopup {
 export default new SwalPopup();
 ```
 
-* 작성 시 role은 카멜방식이 아닌 '-' 사용
+* 작성 시 role은 카멜 방식이 아닌 '-' 사용
 
 * 참고할만한 사이트 (https://example.cypress.io/)
   * `.type()`: 문자열을 입력한다.
@@ -95,19 +79,15 @@ cy.url(); // 현재 url을 가져올 수 있다.
 cy.url().should('be.visible');
 ```
 
-##### Wait
-
-1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못 찾을 수 있으므로 wait를 사용한다.
+* cy.get은 text() 기능이 없어서 `should('have.text', )` 를 사용하여 값의 유무를 알 수 있다.
 
 ```javascript
-cy.wait();
-// api의 결과를 별칭으로 지정 후 해당 별칭을 실행하고 싶은 순서대로 인자를 넣어줄 수도 있음 
+cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
 ```
 
-<<<<<<< HEAD
-2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (interceptions[0]과 [1]이 됨)
+* cy.get 안에서 `>`의 활용법
 
-```javascript
+```
             cy.get('[data-cy="listMngArea"] .MuiTableBody-root > tr').eq(2).each(($el, idx) => {
                 cy.log($el.children().eq(1).text());
                 // cy.log($el.children().eq(2).text());
@@ -122,31 +102,18 @@ cy.wait();
 */
 ```
 
+---
 
+##### Wait
 
+1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못 찾을 수 있으므로 wait를 사용한다.
 
+```javascript
+cy.wait();
+// api의 결과를 별칭으로 지정 후 해당 별칭을 실행하고 싶은 순서대로 인자를 넣어줄 수도 있음 
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 2. 비동기 api가 순서가 있는 경우 다음과 같이 wait에 순서를 걸어둠 (interception[0]과 [1]이 됨)
->>>>>>> 0d20e1992069407cf781e32b1f70a4547b19f1ee
 
 ```javascript
 cy.intercept('POST', `/api/path`).as('postApi');
@@ -157,3 +124,20 @@ cy.wait('@PostApi', '@getApi').then((interception) => {
 });
 ```
 
+---
+
+### ETC
+
+##### front, cypress 개발 중 intellij 가 느려진 경우 clean up + cache clean
+
+1. `package.json` 안에 아래와 같이 cleanup 사용
+
+```json
+"scripts": {
+	"cleanup": "rimraf target/classes/static/",
+}
+```
+
+2. File -> Invalidate Caches...
+
+<img src="img/2.png" alt="2" style="zoom:47%;" />
