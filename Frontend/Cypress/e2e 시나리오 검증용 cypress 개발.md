@@ -31,7 +31,7 @@ describe('My Account', function () {
 
 ---
 
-##### cy.get
+### cy.get
 
 * 태그 안쪽: `data-cy={'name'}`
 * cypress.json 안쪽: `[data-cy=name]`
@@ -85,7 +85,7 @@ cy.url().should('be.visible');
 cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
 ```
 
-* cy.get 안에서 `>`의 활용법
+#####  `>`의 활용법
 
 ```
             cy.get('[data-cy="listMngArea"] .MuiTableBody-root > tr').eq(2).each(($el, idx) => {
@@ -102,9 +102,21 @@ cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
 */
 ```
 
+##### each문 활용
+
+```javascript
+# 세 번째 tr의 첫 번째 요소의 값이 `e2e test3`이면 해당 idx의 `data-cy=reject`가 있는 버튼을 클릭한다.
+cy.get('[data-cy="list"] .TableBody-root > tr').each(($el, idx) => {
+	if ($el.children().eq(2).children().eq(0).text() === 'e2e test3') {
+        idx = idx + 1;
+        cy.get(':nth-child(' + idx + ') > .text-right > [data-cy="reject"]').click({force: true});
+    }
+});
+```
+
 ---
 
-##### Wait
+### Wait
 
 1. 비동기 api를 사용할 때 불러오는 동안 아래의 코드가 실행되서 요소를 못 찾을 수 있으므로 wait를 사용한다.
 
