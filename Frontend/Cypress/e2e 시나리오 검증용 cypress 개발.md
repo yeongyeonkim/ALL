@@ -104,6 +104,8 @@ cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
 
 ##### each문 활용
 
+* index
+
 ```javascript
 # 세 번째 tr의 첫 번째 요소의 값이 `e2e test3`이면 해당 idx의 `data-cy=reject`가 있는 버튼을 클릭한다.
 cy.get('[data-cy="list"] .TableBody-root > tr').each(($el, idx) => {
@@ -112,6 +114,18 @@ cy.get('[data-cy="list"] .TableBody-root > tr').each(($el, idx) => {
         cy.get(':nth-child(' + idx + ') > .text-right > [data-cy="reject"]').click({force: true});
     }
 });
+```
+
+* find
+
+```
+            List.tableBody().each($el => {
+                if ($el.children().eq(1).find('.d-flex > :nth-child(1)').text() === 'Marketer') {
+                    cy.log("마케터");
+                } else {
+                    cy.log("그외");
+                }
+            });
 ```
 
 ---
