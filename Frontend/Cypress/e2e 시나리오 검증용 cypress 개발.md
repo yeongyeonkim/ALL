@@ -67,7 +67,7 @@ export default new SwalPopup();
 * 참고할만한 사이트 (https://example.cypress.io/)
   * `.type()`: 문자열을 입력한다.
 
-```json
+```javascript
 cy.get('.class-name')
   .type('dudtbd111@naver.com')
   .should('have.value', 'dudtbd111@naver.com');
@@ -85,9 +85,32 @@ cy.url().should('be.visible');
 cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
 ```
 
+##### if else
+
+```javascript
+// cy.get('data-cy=test') 에는 text 값을 비교할 함수가 정의되어 있지 않아서
+// 다음과 같이 then을 사용하여 element를 추출하고 그 text를 비교하는 방식 등으로 한다.
+      if (cy.get('[data-cy="authority"]').then($el => {
+          if ($el.text() === 'AM' || $el.text() === 'SV') {
+            cy.log('포함');
+          } else {
+            cy.log('미포함');
+          }
+        }));
+```
+
+
+
+* 특정 태그가 하나인 경우 태그 이름을 지정해서 값을 가져올 수 있다.
+
+```javascript
+cy.get('[data-cy="marketing-owner-radio"] input').should('be.disabled');
+// marketing-owner-radio가 지정된 div 안의 input 태그인 Radio 버튼이 하나여서 가능한 코드
+```
+
 #####  `>`의 활용법
 
-```
+```javascript
             cy.get('[data-cy="listMngArea"] .MuiTableBody-root > tr').eq(2).each(($el, idx) => {
                 cy.log($el.children().eq(1).text());
                 // cy.log($el.children().eq(2).text());
@@ -118,7 +141,7 @@ cy.get('[data-cy="list"] .TableBody-root > tr').each(($el, idx) => {
 
 * find
 
-```
+```javascript
             List.tableBody().each($el => {
                 if ($el.children().eq(1).find('.d-flex > :nth-child(1)').text() === 'Marketer') {
                     cy.log("마케터");
@@ -158,7 +181,7 @@ cy.wait('@PostApi', '@getApi').then((interception) => {
 
 1. `package.json` 안에 아래와 같이 cleanup 사용
 
-```json
+```javascript
 "scripts": {
 	"cleanup": "rimraf target/classes/static/",
 }
