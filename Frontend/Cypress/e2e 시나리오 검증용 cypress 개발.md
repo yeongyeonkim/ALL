@@ -79,11 +79,23 @@ cy.url(); // 현재 url을 가져올 수 있다.
 cy.url().should('be.visible');
 ```
 
-* cy.get은 text() 기능이 없어서 `should('have.text', )` 를 사용하여 값의 유무를 알 수 있다.
+##### should
 
-```javascript
-cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
-```
+* `'have.text'`
+
+  * cy.get은 text() 기능이 없어서 `should('have.text', )` 를 사용하여 값의 유무를 알 수 있다.
+
+    ```javascript
+    cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
+    ```
+
+* `'exist'`
+
+  * 화면에 존재하지 않는 지 확인하기 위해서 사용한다. (not.be.visible로 하게되면 애초에 get을 해올 객체를 찾지 못함)
+
+    ```javascript
+    cy.get('[data-cy=WEB]').should('not.exist');
+    ```
 
 ##### if else
 
@@ -98,8 +110,6 @@ cy.get('[data-cy="tooltip"]').should('have.text', 'e2e MO');
           }
         }));
 ```
-
-
 
 * 특정 태그가 하나인 경우 태그 이름을 지정해서 값을 가져올 수 있다.
 
