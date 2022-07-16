@@ -52,16 +52,16 @@ getPresignedUrl(request, loginAccountDto)
 // ServiceImpl
 private long PRESIGNED_URL_EXPIRATION_TIME = 1000 * 60 * 15;
 
-@Value("${presignedURL.bucket}")
+@Value("${bucket}")
 private String bucket;
 
-@Value("${presignedURL.region}")
+@Value("${region}")
 private String region;
     
-@Value("${presigned.accesskey}")
+@Value("${accesskey}")
 private String accesskey;
 
-@Value("${presigned.secretkey}")
+@Value("${secretkey}")
 private String secretkey;
 
 public Object getPresignedUrl(HttpServletRequest request, LoginAccountDto loginAccountDto) {
