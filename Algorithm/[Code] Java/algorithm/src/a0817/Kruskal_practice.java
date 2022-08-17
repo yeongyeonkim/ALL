@@ -1,4 +1,4 @@
-package a0816;
+package a0817;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Kruskal {
+public class Kruskal_practice {
 
 	public static int N = 7;
 	public static List<int[]> v;
@@ -33,24 +33,22 @@ public class Kruskal {
 
 			@Override
 			public int compare(int[] o1, int[] o2) {
-				return Integer.compare(o1[2], o2[2]);
+				return o1[2] - o2[2];
 			}
 		});
 		for (int[] e : v)
 			System.out.println(Arrays.toString(e));
-
 		p = new int[N + 1];
-		for (int i = 0; i < N; i++)
+		for (int i = 1; i <= N; i++)
 			p[i] = i;
-
 		int sum = 0;
-		for (int i = 0; i < v.size(); i++) {
-			if (findSet(v.get(i)[0]) != findSet(v.get(i)[1])) {
-				System.out.println("->" + Arrays.toString(v.get(i)));
-				sum = sum + v.get(i)[2];
-				union(v.get(i)[0], v.get(i)[1]);
+		for (int[] e : v) {
+			if (findSet(e[0]) != findSet(e[1])) {
+				sum = sum + e[2];
+				union(e[0], e[1]);
 			}
 		}
+
 		return sum;
 	}
 
