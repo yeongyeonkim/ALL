@@ -53,6 +53,8 @@
    
    export default App;
    ```
+   
+3. 기본적인 템플릿을 활용 가능 (https://mui.com/material-ui/getting-started/templates/)
 
    ##### index.js
 
