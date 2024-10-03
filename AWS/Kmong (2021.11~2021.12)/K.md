@@ -25,7 +25,5 @@
 
 #### WBS
 
-![WBS](img/WBS.JPG)
-
 - 인프라 구축 및 인프라 생성 가이드 전달
 - ECR 구성 자동화를 돕는 Shell Script 작성하여 전달
