@@ -1,0 +1,12 @@
+구성(HTTP StatusCode, 응답 시간, DB)
+ - micrometer를 활용하여 /actuator/metrics를 통해 http_request_count Query를 사용한다.
+ - 응답 시간도 유사 (http_server_requests_seconds_sum/http_server_requests_seconds_count)
+ - DB는 이미 구성되어있다. 알람만 추가로 설정한다.
+
+구성(resultCode) 
+Loki, Fluent-bit 활용
+ - 현재 애플리케이션에서 Header 값을 파싱하여 로그에서 resultCode 값을 보여주고 있고
+   우리는 fluent-bit을 사용하고 있기 때문에 해당 로그를 가로채어 재활용하는 Loki같은 도구를 사용하면 될 듯 하다.
+   
+
+   
