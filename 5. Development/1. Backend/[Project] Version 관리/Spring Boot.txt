@@ -1,0 +1,23 @@
+기존 버전: 2.1.12.RELEASE
+적용 버전: 2.6.6
+
+참고 문서 ★
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.6-Release-Notes
+---
+스프링 순환 참조 관련 코드 추가 (순환 참조가 default: false로 변경됨)
+spring.main.allow-circular-references=true
+
+---
+Spring MVC를 위한 PathPattern 기반 경로 매칭 전략
+spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
+
+
+---
+StringUtils.isEmpty 기능이 deprecated 됨.
+따라서 ObjectUtils.isEmpty로 통합
+
+https://github.com/spring-projects/spring-framework/issues/25945
+
+---
+HandlerInterceptorAdaptor를 extends 하는 방식에서 (spring 5.3 version 이상 부터)
+HandlerInterceptor를 implements 하는 방식으로 변경

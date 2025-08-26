@@ -1,9 +1,0 @@
-https://github.com/237summit/Kubernetes-on-AWS/blob/main/LAB_02%20Amazon%20EKS%20CNI%20and%20Kubernetes%20Service%20API
-
-CNI github 따라서 진행 후
-
-expose 후
-$ netstat -napt | grep 32567
-remoteAccess 보안 그룹 - 인바운드 규칙 80, 32567 포트 열기
-curl {External-IP:32567}
-{External-IP:32567} 이대로 web site에 치면 'Welcome to nginx!' 화면을 볼 수 있다.

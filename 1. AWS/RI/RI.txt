@@ -1,0 +1,18 @@
+[EC2]
+
+* ec2의 경우 convertible RI가 존재하여 같은 패밀리 내에서 변경이 자유롭다.
+
+[RDS]
+https://aws.amazon.com/ko/about-aws/whats-new/2017/10/amazon-rds-reserved-instances-offer-instance-size-flexibility/
+
+* 장애로 인해 타입을 변경하는 경우 RI 에서 제외되어
+해당 인자 값이 추가 된 부분에서 온디맨드 요금이 청구된다.
+
+* scale down은 할 수 없기 때문에 새로운 RDS를 만들고 마이그레이션을 하는 방식으로 진행해야한다.
+
+위 두가지를 종합한
+EX) 
+r5.xlarge RI를 구매해 둔 상황에서 이슈로 인해 r5.4xlarge로 변경하고 스토리지 또한 늘렸다.
+-> RI에 해당하는 타입이 아니기 때문에 온디맨드 요금이 발생한다.
+-> 이에 문제 해결 후 r5.4xlarge를 다시 타입 다운을 하여서 RI에 속하게끔 할 수 있다.
+-> 하지만 스토리지 늘린 것은 줄이는 것이 불가하기 때문에 이로 인한 비용이 클 것으로 예상되는 경우, 새로운 인스턴스 생성하여 마이그레이션 후 기존 인스턴스 삭제

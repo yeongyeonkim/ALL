@@ -1,6 +1,0 @@
-[Spring 공식 문서 및 블로그]
-https://spring.io/projects/spring-boot
-https://spring.io/blog
-https://spring.io/blog/2022/05/31/this-week-in-spring-may-31st-2022
-
-https://www.baeldung.com/
