@@ -1,0 +1,26 @@
+[ Mixed Contents ]
+-> https http 혼용으로 인한 문제, https 권장
+
+-------------------------
+
+[ CloudFront에서 불러오지 않고 원본 파일에서 불러오는 경우 ]
+* F12 -> Network -> Header -> x-cache : Miss from cloudfront 인 경우 Hit from cloudfront 가 되게끔 설정해주어야 한다.
+-> CloudFront 설정의 Cache 부분 수정.
+
+** Cached HTTP Methods
+- OPTIONS 메소드로 요청할 때, CloudFront에서 Origin의 응답을 캐싱할지 여부를 지정합니다.
+- GET, HEAD 요청에 대한 응답은 항상 캐싱합니다.
+** Cache Based on Selected Request Headers
+CloudFront에서 지정된 헤더의 값을 기반으로 객체를 캐싱할지 여부를 지정합니다.
+ 1. None (improves caching)(없음(캐싱 향상) : CloudFront가 헤더 값을 기반으로 객체를 캐시하지 않습니다.
+ 2. Whitelist(화이트리스트) : CloudFront가 지정된 헤더의 값(Whitelist)만을 기반으로 객체를 캐시합니다. 
+			즉, Whitelist Headers(화이트리스트 헤더)를 사용하여 CloudFront에서 캐시의 기준으로 설정할 헤더를 선택합니다.
+ 3. ALL : CloudFront가 이 캐시 동작과 연결된 객체를 캐싱하지 않습니다.
+	그 대신 CloudFront가 모든 요청을 Origin에 전송합니다. (Amazon S3 Origin에는 권장하지 않음)
+** Object Caching
+- Origin 서버에서 객체에 Cache-Control 헤더를 추가하여 파일의 캐시 유지 시간을 설정합니다.
+- 유지 시간이 지나면 CloudFront에서 파일이 삭제됩니다
+- Use Origin Cache Headers를 선택하면 Default TTL이 적용되며, 1일(86400초)이 기본값입니다.
+- Customize를 선택하면 Minimum TTL, Maximum TTL를 작성해줘야 합니다.
+
+-------------------------

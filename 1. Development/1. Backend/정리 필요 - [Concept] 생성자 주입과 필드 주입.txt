@@ -1,2 +1,0 @@
-https://yaboong.github.io/spring/2019/08/29/why-field-injection-is-bad/
-스프링 - 생성자 주입을 사용해야 하는 이유, 필드인젝션이 좋지 않은 이유

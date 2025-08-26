@@ -1,0 +1,8 @@
+기존 버전: 2.7.0
+적용 버전: 3.0.0
+
+Spring Boot 2.6.6 버전으로 변경되면서(up)
+
+스웨거 버전도 맞춰주어야 했다. (Swagger version for spring boot 2.6.6)
+
+Swagger 3.0.0 부터는 URL이 변경되기 때문에 swagger-ui/index.html로 접근이 가능하다.

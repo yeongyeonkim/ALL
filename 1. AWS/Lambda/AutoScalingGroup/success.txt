@@ -1,0 +1,72 @@
+import boto3
+import json
+import datetime
+
+def create(client): 
+    Instance_list=[
+        'i-0041bef6466666483',
+        'i-0c5e0ae823e9c3c43'
+        ]
+    response = client.describe_instances(InstanceIds=Instance_list)
+    response_image = client.describe_images(Owners=['915335425884'])
+    ec2_list = response['Reservations']
+    create_list = []
+    delete_list = []
+    
+    # create_list & delete_list 
+    for ec2 in ec2_list:
+        print('--------------S-T-A-R-T----------------')
+        ec2_info = ec2['Instances'][0]
+        instance_name = ec2_info['InstanceId']
+        tag_list = ec2_info['Tags']
+        tag_value = '' # 생성하고자하는 인스턴스의 value
+        for tag in tag_list:
+            if tag['Key'] == "Name": # Tag Key 값이 Name 이면,
+                tag_value = tag['Value']
+        print('tag_value :', tag_value)
+        
+        create_list.append([tag_value, instance_name])
+        
+        now_compare_value = "{}-Launch_Configuration".format(tag_value) # 비교 문자열
+        
+        for image in response_image['Images']:
+            image_tag = image['Tags'][0]
+            if now_compare_value == image_tag['Value']: # 같은 Value의 기존 AMI는 삭제해야함.
+                delete_list.append(image['ImageId'])
+            
+        print('--------------E-N-D---------------')
+        
+    print('create_list :', create_list)
+    print('delete_list :', delete_list)
+    
+    # delete AMI
+    for delete_image_id in delete_list:
+        response_delete = client.deregister_image(
+                ImageId=delete_image_id,
+                DryRun=False
+            )
+    print('length :', len(client.describe_images(Owners=['915335425884']))) ## 삭제 전 2가 왜 남아있는지
+    
+    for create_AMI in create_list:
+        Instance_Name = create_AMI[0]
+        Instance_Id = create_AMI[1]
+        AMI = client.create_image(
+                InstanceId=Instance_Id,
+                Name="{}-Launch_Configuration".format(Instance_Name),
+                NoReboot=True,
+                TagSpecifications=[
+                    {
+                        'ResourceType': 'image',
+                        'Tags': [
+                            {
+                                'Key': 'Name',
+                                'Value': "{}-Launch_Configuration".format(tag_value)
+                            },
+                        ]
+                    },
+                ]                
+            )
+    
+def lambda_handler(event, context):
+    client = boto3.client('ec2')
+    create(client)
