@@ -1,0 +1,94 @@
+config:
+  inputs: |
+    [INPUT]
+        Name                tail
+        Tag                 application.*
+        Exclude_Path        /var/log/containers/cloudwatch-agent*, /var/log/containers/fluent-bit*, /var/log/containers/aws-node*, /var/log/containers/kube-proxy*
+        Path                /var/log/containers/*.log
+        multiline.parser    docker, cri
+        DB                  /var/fluent-bit/state/flb_container.db
+        Mem_Buf_Limit       50MB
+        Skip_Long_Lines     On
+        Refresh_Interval    10
+        Rotate_Wait         30
+        storage.type        filesystem
+        Read_from_Head      Off  
+
+    [INPUT]
+        Name                tail
+        Tag                 slog
+        Path                /var/log/containers/s-*.log
+        multiline.parser    docker, cri
+        DB                  /var/fluent-bit/state/flb_s_container.db
+        Mem_Buf_Limit       50MB
+        Skip_Long_Lines     On
+        Refresh_Interval    10
+        Rotate_Wait         30
+        storage.type        filesystem
+        Read_from_Head      Off
+
+  filters: |
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+
+    [FILTER]
+        Name rewrite_tag
+        Match slog
+        Rule $log ^(.*)$ loki.application false
+        Emitter_Name loki_rewriter
+        
+    [FILTER]
+        Name    grep
+        Match   loki.*
+        Exclude log loki/api/v1/push
+
+    [FILTER]
+        Name    lua
+        Match   loki.*
+        script  /fluent-bit/etc/conf/extract_http_status.lua
+        call    extract_http_status
+
+  outputs: |
+    [OUTPUT]
+        Name                         s3
+        Match                        application.*
+        bucket                       fluentbit-bucket
+        region                       ap-northeast-2
+        compression                  gzip
+        use_put_object                On
+        s3_key_format                /dt=%Y%m%d/hour=%H/fluentbit_%H%M_$UUID.gz
+        s3_key_format_tag_delimiters .-
+        total_file_size              10M
+        upload_timeout               5m
+        storage_class                INTELLIGENT_TIERING
+
+    [OUTPUT]
+        name                         loki
+        match                        loki.*
+        host                         loki-gateway.default.svc.cluster.local
+        port                         80
+        labels                       job=fluent-bit
+        label_keys                   $stream,$http_status
+
+  extraFiles: 
+    extract_http_status.lua: |
+      function extract_http_status(tag, timestamp, record)
+          local log = record["log"]
+          if log ~= nil then
+              local status = string.match(log, "DTODATA%[%&lt;(%d%d%d)")
+              if status ~= nil then
+                  record["http_status"] = status
+              end
+
+              local result_code = string.match(log, "resultCode:\\"(%d+)\\"")
+              if result_code ~= nil then
+                  record["result_code"] = result_code
+              end
+          end
+          return 1, timestamp, record
+      end
