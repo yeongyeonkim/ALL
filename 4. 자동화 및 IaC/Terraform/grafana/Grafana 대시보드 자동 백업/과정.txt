@@ -1,0 +1,18 @@
+API_KEY가 Service Account로 변경된 것 같다.
+
+생성해주고 토큰 값을 기억한다.
+
+https://grafana.com/docs/grafana/latest/developers/http_api/dashboard/#get-dashboard-by-uid
+
+에 나와있는 것 처럼 `/api/dashboards/uid/$uid` 메소드를 사용한다.
+
+해당 Request에 대한 Response에는 dashboard와 meta 가 존재해서 meta를 제거한 값을 추출하기 위해 jq를 사용한다.
+
+따라서 명령어는 다음과 같다. 
+
+`$ curl -H "Authorization: Bearer $SA_TOKEN" $GRAFANA_URL/api/dashboards/uid/$uid | jq '.dashboard' > $uid.json`
+
+명령어를 통해 가져온 json으로 정상적으로 import 되는 것도 확인하였다.
+
+지금까지의 내용을 가지고 모든 대시보드를 가져오는 스크립트(regularDashboardExport.sh
+)는 claude AI를 활용한다.

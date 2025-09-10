@@ -1,0 +1,51 @@
+Prometheus, Grafana로 모니터링을 하고 있다.
+기본적인 node-exporter와 같은 servicemonitor 등으로 가져온 metrics으론 부족한 부분이 있어
+kafka-exporter나 cloudwatch Datasource등을 활용해서 
+Grafana 대시보드를 구성하고 있다.
+
+내가 구성하고 싶은 것
+1. HikariCP Connection 수 추이 (idle, waiting 등 유의미한 패널 지표 + 2. 임계치에 따른 색상 등의 표현이 필요)
+ hikaricp_connections_active 현재 사용 중인 연결 수
+ hikaricp_connections_idle 유휴 상태 연결 수
+ hikaricp_connections_pending 대기 중인 연결 요청 수 (성능 병목 지표)
+ hikaricp_connections_max 최대 연결 수
+ 
+ 위와 같은 지표가 있을 때, 아래 두 패널이 있으면 될 것 같다.
+ 1. active와 max는 연결해서 최대는 몇이고 최대 중 몇을 사용하고 있는지 정도 알면 좋을 것 같다.(그리고 max >= idle + active 이므로, 굳이 idle은 표현이 필요없을 듯 하다)
+ 2. pending은 평소에 잘 발생하지 않고 구분지어서 패널로 표현되어야 할 것 같다. pending은 보통 0에 수렴하다가 증가할거고 그 때 문제인 것
+ 혹은, 테이블로 전반적으로 확인할수도 있겠다.
+┌────────────────────────────────────────┐
+│    HikariCP Connection Pool Status     │
+├────────────────────────────────────────┤
+│ Service    │ Active/Max │ Idle │ Usage │
+├────────────────────────────────────────┤
+│ admin      │   15/50    │  30  │  30%  │
+│ order-svc  │   25/100   │  70  │  25%  │
+│ payment    │    8/20    │  10  │  40%  │
+└────────────────────────────────────────┘ 
+
+2. Namespace 별로 pod 컨테이너 상태를 확인할 수 있는 지표
+ - 예를 들어 admin 서비스인 경우
+                  CPU 평균  CPU 최대  HikariCP 최대
+   admin-1       15.3%      30.3%          50
+   admin-2       17.5%      29.1%          10
+   
+ Query A: avg by (pod) (rate(container_cpu_usage_seconds_total{namespace="admin", container!="POD"}[5m])) * 100
+ Query B: max by (pod) (rate(container_cpu_usage_seconds_total{namespace="admin", container!="POD"}[5m])) * 100
+ Query C: max by (pod) (hikaricp_connections_max{namespace="admin"})
+ Format: Table, Type: Instant
+
+3. RDS
+ - CPU 사용률
+ - RollbackSegmentHistoryListLength
+
+4. MSK
+ - kafka_consumergroup_lag (Kafka exporter)
+ - kafka_consumergroup_members (Kafka exporter)
+ - Kafka EstimatedMaxTimeLag (AWS/Kafka - CloudWatch)
+
+5. ElastiCache
+ - NetworkBandwidthInAllowanceExceeded
+ - NetworkBandwidthOutAllowanceExceeded
+ - NetworkConntrackAllowanceExceeded
+ - NetworkPacketsPerSecondAllowanceExceeded

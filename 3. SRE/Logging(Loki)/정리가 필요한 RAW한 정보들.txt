@@ -1,1 +1,55 @@
-메모리 버퍼에 저장
+label_keys는 낮은 카디널리티를 갖는 요소들을 넣어야한다.
+결국 tsdb indexing을 위한 값들이 될 것이기 때문
+e.g., 
+timestamp: 20241213 20251210 20210412 .... 무한히 가능 -> 높은 카디널리티
+status_code: 2xx, 4xx, 5xx 등 수십 여개 정도 -> 낮은 카디널리티
+
+Record가 fluentbit 메모리 버퍼에 저장되고 최종적으로 Loki s3에 어떤 형태로 담기는 지 확인해서 넣기
+
+설정한 부분들에 대한 코드와 Architecture를 그려 넣으면 좋을듯
+예를 들어,
+A INPUT -> A OUTPUT -> S3 -> AWS Athena
+B INPUT -> B FILTER -> B OUTPUT -> Loki
+
+
+3. application.sticker → S3
+[INPUT]
+tail
+Tag: application.sticker
+Path: /var/log/containers/*.log
+Exclude_Path: cloudwatch-agent, fluent-bit, aws-node, kube-proxy
+multiline.parser: docker, cri
+[PARSER]
+docker, cri (멀티라인 처리)
+[FILTER]
+grep: log 필드에 LoggingQRadarAopHandler 포함된 로그만 통과
+[OUTPUT]
+s3: sticker-log-bucket에 gzip 압축 후 저장
+
+2. application.* → S3
+[INPUT]
+tail
+Tag: application.*
+Path: /var/log/containers/*.log
+Exclude_Path: cloudwatch-agent, fluent-bit, aws-node, kube-proxy
+multiline.parser: docker, cri
+[PARSER]
+docker, cri
+[FILTER]
+없음 (application.*에 대한 별도 필터 없음)
+[OUTPUT]
+s3: all-fluentbit-bucket에 gzip 압축 후 저장
+
+3. loki.* → Loki
+[INPUT]
+tail
+Tag: slog
+Path: /var/log/containers/sp-*.log
+multiline.parser: docker, cri
+[FILTER]
+rewrite_tag: slog → loki.application
+grep: log에 loki/api/v1/push 포함된 로그 제외
+lua: extract_http_status.lua 실행하여 http_status 추출
+[OUTPUT]
+loki: Loki로 전송, 라벨 포함 (stream, http_status, result_code, log_level, domain)
+
