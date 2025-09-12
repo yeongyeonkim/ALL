@@ -1,8 +1,0 @@
-Kiali는 Istio 서비스 메시에 대한 시각화 및 모니터링을 제공하는 오픈 소스 도구로, Apache License 2.0을 따르기 때문에 비용이 들지 않습니다.
-
-Kiali는 Istio와 함께 작동하며, Istio의 트래픽 패턴, 에러율 등 핵심 메트릭을 시각화하는 데 사용됩니다. 언급하신 Zipkin은 분산 트레이싱 도구이며, Kiali는 Jaeger 또는 Zipkin과 같은 분산 트레이싱 도구와 연동하여 분산 트레이싱 데이터를 제공합니다. 즉, Kiali는 서비스 메시 전체를 관리하고 모니터링하는 데 중점을 두고, Zipkin은 개별 요청의 흐름을 추적하는 데 특화되어 있습니다.
-
-
-이 비디오는 Kiali와 Jaeger를 사용하여 Istio 서비스 메시를 관리하는 방법에 대해 보여줍니다.
-
-https://www.youtube.com/watch?v=hCCkqaZrnwk
